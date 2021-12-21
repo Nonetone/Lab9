@@ -1,0 +1,43 @@
+<script>
+    function run(){
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/my/find?v1='+document.getElementById('v1').value, true);
+        xhr.send();
+        document.getElementById('result').hidden = false;
+        let body = document.getElementById('tbd');
+        body.innerHTML = '';
+        cnum = 1;
+        
+    xhr.onload = function(){
+        let arr = JSON.parse(this.responseText)
+        arr.forEach(e=>{
+            let tr = document.createElement('tr');
+            let num = document.createElement('td');
+            let val = document.createElement('td');
+            num.innerHTML = cnum++;
+            val.innerHTML = e;
+            tr.appendChild(num);
+            tr.appendChild(val);
+            body.appendChild(tr);
+        })
+    }
+}
+</script>
+
+    <%= form_tag() do %>
+    <%= label_tag("Введите n:") %>
+    <%= text_field_tag(:v1) %> <br/>
+    <%= button_tag("Найти счастливые", id: 'btn', type: 'button', onclick: 'run()') %>
+    <% end %>
+<div>
+    <table id="result" border="1px" hidden>
+        <thead>
+            <tr>
+                <td>Номер</td>
+                <td>Число</td>
+            </tr>
+        </thead>
+       <tbody id="tbd">
+      </tbody>
+    </table>
+</div>
